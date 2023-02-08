@@ -5,6 +5,7 @@ import au.com.telecom.domain.PhoneNumber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,21 +15,31 @@ import java.util.stream.IntStream;
 public class SeedAppDataConfiguration {
 
     @Bean
-    public Set<Customer> customers() {
-        return IntStream.range(0, 20)
-                .mapToObj(i -> new Customer(Long.valueOf(i), "Customer" + i, "customer"+i+".xyz@gmail.com"))
-                .collect(Collectors.toSet());
-    }
+    public Map<Long, Customer> customers() {
+        Map<Long, Customer> customerMap = IntStream.range(0, 20)
+                .mapToObj(i ->
+                        new Customer((long) i, "Customer" + i, "customer" + i + ".xyz@gmail.com"))
+                .collect(Collectors.toMap(Customer::getId, customer -> customer));
+         customerMap.entrySet()
+                 .forEach(entry ->
+                     generatePhoneNumbers(entry.getKey()).forEach(phoneNumber -> entry.getValue().addPhoneNumber(phoneNumber)));
 
-    @Bean
-    public Set<PhoneNumber> phoneNumbers() {
+         return customerMap;
+    }
+    private Set<PhoneNumber> generatePhoneNumbers(Long customerId) {
         Random random = new Random();
         return IntStream.range(0, 3)
                 .mapToObj(j -> {
-                    int prefix = j % 2 == 0 ? 2 : 4;
-                    return new PhoneNumber(Long.valueOf(j), "0" + prefix + random.nextInt(100) + " " + random.nextInt(100)+ " "+random.nextInt(1000), false);
+                    PhoneNumber phoneNumber = new PhoneNumber((long) j, "04" + random.nextInt(100) + " " + random.nextInt(1000)+ " "+random.nextInt(1000), false);
+                    phoneNumber.setCustomerId(customerId);
+                    return phoneNumber;
                 })
                 .collect(Collectors.toSet());
     }
 
+    @Bean
+    public Map<Long, Set<PhoneNumber>> phoneNumbersMap() {
+        return customers().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getPhoneNumbers()));
+    }
 }
