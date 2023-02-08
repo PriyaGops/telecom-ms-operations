@@ -12,8 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PhoneNumberServiceTest {
 
     private PhoneNumberService phoneNumberService;
-
-
     @Test
     public void givenPhoneNumbersArePresentInDbReturnsTheList() throws Exception {
         phoneNumberService = new PhoneNumberService(DataProvider.phoneNumbers());

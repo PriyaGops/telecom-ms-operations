@@ -18,16 +18,16 @@ public class DataProvider {
         Customer customer3 = createCustomer(3L, "Sam", "sam@abc.com");
         Customer customer4 = createCustomer(4L, "Bob", "bob@abc.com");
 
-        PhoneNumber phoneNumber11 = createPhoneNumber(11L, "0456 789 800", true);
+        PhoneNumber phoneNumber11 = createPhoneNumber(11L, "0456789800", true);
         phoneNumber11.setCustomerId(1L);
 
-        PhoneNumber phoneNumber12 = createPhoneNumber(12L, "0467 745 342", false);
+        PhoneNumber phoneNumber12 = createPhoneNumber(12L, "0467745342", false);
         phoneNumber12.setCustomerId(1L);
 
         customer1.addPhoneNumber(phoneNumber11);
         customer1.addPhoneNumber(phoneNumber12);
 
-        PhoneNumber phoneNumber21 = createPhoneNumber(21L, "0467 657 876", false);
+        PhoneNumber phoneNumber21 = createPhoneNumber(21L, "0467657876", false);
         phoneNumber21.setCustomerId(2L);
 
         customer2.addPhoneNumber(phoneNumber21);

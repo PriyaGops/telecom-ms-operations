@@ -1,5 +1,6 @@
 package au.com.telecom.service;
 
+import au.com.telecom.domain.ActivateRequest;
 import au.com.telecom.domain.Customer;
 import au.com.telecom.domain.PhoneNumber;
 import au.com.telecom.exception.ResourceNotFoundException;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +27,7 @@ public class CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer id " + customerId + " not found")));
     }
 
-    public Optional<PhoneNumber> activatePhoneNumber(Long customerId, String phoneNumber) {
+    public Optional<PhoneNumber> activatePhoneNumber(Long customerId, String phoneNumber, ActivateRequest activateRequest) {
 
         Optional<Map.Entry<Long, Customer>> customerEntry = customers.entrySet().stream().filter(entry -> entry.getKey().equals(customerId))
                 .findFirst();
@@ -37,7 +37,7 @@ public class CustomerService {
         }
         return customerEntry.map(entry -> entry.getValue().getPhoneNumbers().stream()
                 .filter(ph -> ph.getNumber().equals(phoneNumber))
-                .peek(ph -> ph.setActivated(true))
+                .peek(ph -> ph.setActivated(activateRequest.isActivated()))
                 .findAny()
                 .orElseThrow(() -> new ResourceNotFoundException("Phone number " + phoneNumber + " not found")));
     }

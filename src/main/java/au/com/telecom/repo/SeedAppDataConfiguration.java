@@ -30,7 +30,7 @@ public class SeedAppDataConfiguration {
         Random random = new Random();
         return IntStream.range(0, 3)
                 .mapToObj(j -> {
-                    PhoneNumber phoneNumber = new PhoneNumber((long) j, "04" + random.nextInt(100) + " " + random.nextInt(1000)+ " "+random.nextInt(1000), false);
+                    PhoneNumber phoneNumber = new PhoneNumber((long) j, "045678764"+j, false);
                     phoneNumber.setCustomerId(customerId);
                     return phoneNumber;
                 })

@@ -1,5 +1,7 @@
 package au.com.telecom.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PhoneNumber {
 
     private Long id;
@@ -13,10 +15,6 @@ public class PhoneNumber {
         this.activated = activated;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
     public Long getCustomerId() {
         return customerId;
     }
@@ -25,6 +23,7 @@ public class PhoneNumber {
         this.customerId = customerId;
     }
 
+    @JsonProperty("phoneNumber")
     public String getNumber() {
         return this.number;
     }

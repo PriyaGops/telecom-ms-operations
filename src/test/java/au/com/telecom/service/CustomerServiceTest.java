@@ -1,6 +1,7 @@
 package au.com.telecom.service;
 
 import au.com.telecom.builder.DataProvider;
+import au.com.telecom.domain.ActivateRequest;
 import au.com.telecom.domain.PhoneNumber;
 import au.com.telecom.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,25 +47,25 @@ public class CustomerServiceTest {
 
     @Test
     public void givenCustomerIdAndPhoneNumberActivateANumber() throws Exception {
-        Optional<PhoneNumber> phoneNumber = customerService.activatePhoneNumber(1L, "0467 745 342");
+        Optional<PhoneNumber> phoneNumber = customerService.activatePhoneNumber(1L, "0467745342", new ActivateRequest(true));
         assertThat(phoneNumber.isPresent()).isTrue();
         assertThat(phoneNumber.get().isActivated()).isTrue();
     }
 
     @Test
     public void givenCustomerIdAndPhoneNumberWhichIsAlreadyActivatedReturnsSuccess() throws Exception {
-        Optional<PhoneNumber> phoneNumber = customerService.activatePhoneNumber(1L, "0456 789 800");
+        Optional<PhoneNumber> phoneNumber = customerService.activatePhoneNumber(1L, "0456789800", new ActivateRequest(true));
         assertThat(phoneNumber.isPresent()).isTrue();
         assertThat(phoneNumber.get().isActivated()).isTrue();
     }
 
     @Test
     public void givenWrongCustomerIdAndRightPhoneNumberActivationFails() throws Exception {
-        assertThrows(ResourceNotFoundException.class, () -> customerService.activatePhoneNumber(5L, "0456 789 800"));
+        assertThrows(ResourceNotFoundException.class, () -> customerService.activatePhoneNumber(5L, "0456789800", new ActivateRequest(true)));
     }
 
     @Test
     public void givenRightCustomerIdAndWrongPhoneNumberActivationFails() throws Exception {
-        assertThrows(ResourceNotFoundException.class, () -> customerService.activatePhoneNumber(5L, "0456 789 801"));
+        assertThrows(ResourceNotFoundException.class, () -> customerService.activatePhoneNumber(5L, "0456789801", new ActivateRequest(false)));
     }
 }
